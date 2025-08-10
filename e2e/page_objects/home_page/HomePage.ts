@@ -1,0 +1,114 @@
+import { expect, Locator, Page } from '@playwright/test';
+import { AppPage } from '../abstract_classes/AbstractClasses';
+import Header from '../shared_components/Header';
+import SignIn from './components/SignInForm';
+import SignUp from './components/SignUpForm';
+
+
+class Locators {
+    constructor(private page: Page) { }
+
+    headerComponent = this.page.locator('app-header > header');
+    aboutSection = this.page.locator('#aboutSection');
+    contactsSection = this.page.locator('#contactsSection');
+    restoreAccessModal = this.page.getByRole('dialog').getByRole('document').locator('div').filter({
+        hasText: 'Restore access×EmailSend'
+    });
+    loginModal = this.page.getByRole('dialog').getByRole('document').locator('div').filter({
+        hasText: 'Log in'
+    });
+    registrationModal = this.page.getByRole('dialog').getByRole('document').locator('div').filter({
+        hasText: 'Registration×NameLast'
+    });
+
+}
+
+class Actions {
+    page: any;
+    constructor(private locators: Locators, private header: Header) { }
+
+    async clickAboutAndScrollToSection(): Promise<void> {
+        await this.header.do.clickOnAboutButton();
+    }
+
+    async clickContactsButtonAndScrollToSection(): Promise<void> {
+        await this.header.do.clickOnContactsButton();
+    }
+
+    async clickGuestLoginButtonRedirectToGuestPage(): Promise<void> {
+        await this.header.check.isGuestLoginButtonEnabled();
+        await this.header.do.clickOnGuestLoginButton();
+    }
+
+    async clickSignInButton(): Promise<void> {
+        await this.header.do.clickOnSignInButton();
+    }
+
+    //     async closeSignInForm(): Promise<void> {
+    //         await this.page.getByRole('button', { name: 'Close' }).click();
+    //     }
+}
+class Assertions {
+    constructor(private locators: Locators, private header: Header) { }
+
+    async verifyPageHeader(): Promise<void> {
+        await this.header.check.allHeaderElementsAreVisibleOnHomePage();
+    }
+
+    async verifyHomeButtonIsActive(): Promise<void> {
+        await this.header.check.homeButtonIsActive();
+    }
+
+    async verifyAboutButtonScrollsToSection(): Promise<void> {
+        await expect(this.locators.aboutSection).toBeVisible();
+        await expect(this.locators.aboutSection).toContainText('Instructions and manuals');
+    }
+
+    async verifyContactsButtonScrollsToSection(): Promise<void> {
+        await expect(this.locators.contactsSection).toBeVisible();
+        await expect(this.locators.contactsSection).toContainText('Contacts');
+    }
+
+    async verifySignInModalVisible(): Promise<void> {
+        await expect(this.locators.loginModal).toBeVisible();
+        await expect(this.locators.loginModal).toContainText('Log in');
+
+    }
+    async verifySignInButtonVisibleAndEnabled(): Promise<void> {
+        expect(this.header.check.signInButtonIsEnabled())
+    }
+    async verifyRestoreFormVisible(): Promise<void> {
+        await expect(this.locators.restoreAccessModal).toBeVisible();
+        await expect(this.locators.restoreAccessModal).toContainText('Restore access');
+
+    }
+
+    async verifyRegistrationFormVisible(): Promise<void> {
+        await expect(this.locators.registrationModal).toBeVisible();
+        await expect(this.locators.registrationModal).toContainText('Registration');
+
+    }
+
+}
+
+export default class HomePage extends AppPage {
+    public pagePath = 'https://qauto2.forstudy.space';
+
+    header: Header;
+    locators: Locators;
+    do: Actions;
+    check: Assertions;
+
+    constructor(page: Page) {
+        super(page);
+
+        this.locators = new Locators(page);
+        this.header = new Header(page, this.locators.headerComponent);
+        this.do = new Actions(this.locators, this.header);
+        this.check = new Assertions(this.locators, this.header);
+    }
+
+    async expectLoaded(): Promise<void> {
+        await expect(this.page).toHaveTitle('Hillel Qauto');
+    }
+}
