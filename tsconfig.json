@@ -1,15 +1,4 @@
 {
-  "name": "garage-e2e",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "npx playwright test",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report",
-    "test:smoke": "playwright test --grep @smoke"
-  },
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
@@ -18,9 +7,13 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "e2e",
+    "rootDir": ".",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@data/*": ["e2e/tests/test-data/*"]
+    }
   },
-  "include": ["e2e"]
+  "include": ["e2e", "data_resources"]
 }

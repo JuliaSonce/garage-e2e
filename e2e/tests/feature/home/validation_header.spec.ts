@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
-import HomePage from '../page_objects/home_page/HomePage';
-import GaragePage from '../page_objects/garage_page/GaragePage'
+import HomePage from '../../../page_objects/home_page/HomePage';
+import GaragePage from '../../../page_objects/garage_page/GaragePage'
 
 
 test.describe('Header UI behavior', async () => {
@@ -8,9 +8,9 @@ test.describe('Header UI behavior', async () => {
     let garagePage: GaragePage;
 
 
-    test.beforeEach(async ({ page: Page }) => {
-        homePage = new HomePage(Page);
-        garagePage = new GaragePage(Page);
+    test.beforeEach(async ({ page }) => {
+        homePage = new HomePage(page);
+        garagePage = new GaragePage(page);
         await homePage.open()
         await homePage.expectLoaded()
 

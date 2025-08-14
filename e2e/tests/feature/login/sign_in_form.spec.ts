@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test"
-import HomePage from "../page_objects/home_page/HomePage"
-import SignInForm from "../page_objects/home_page/components/SignInForm";
-import RestoreAccessForm from "../page_objects/home_page/components/RestoreAccessForm"
-import SignUpForm from "../page_objects/home_page/components/SignUpForm"
+import HomePage from "../../../page_objects/home_page/HomePage"
+import SignInForm from "../../../page_objects/home_page/components/SignInForm"
+import RestoreAccessForm from "../../../page_objects/home_page/components/RestoreAccessForm"
+import SignUpForm from "../../../page_objects/home_page/components/SignUpForm"
 
 
 
@@ -26,7 +26,7 @@ test.describe('Sign in form', async () => {
         await signInForm.check.verifyNoModalsVisible(page)
     });
 
-    test.only('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ page }) => {
+    test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ page }) => {
         await test.step('1: Validate form is visible', async () => {
             await signInForm.check.verifyFormIsVisible()
         })
@@ -41,18 +41,14 @@ test.describe('Sign in form', async () => {
             await signInForm.check.verifyLoginButtonToBeDisabled()
         })
 
-        // await test.step('4: Login button enabled after filling fields', async () => {
 
-        // });
-
-
-        await test.step('5: Close modal and check it disappears', async () => {
+        await test.step('4: Close modal and check it disappears', async () => {
             await signInForm.do.clickCloseButton()
             await signInForm.check.verifyFormIsClosed()
         })
 
 
-        await test.step('6: Forgot password opens Restore Access modal', async () => {
+        await test.step('5: Forgot password opens Restore Access modal', async () => {
             await homePage.do.clickSignInButton()
             await signInForm.do.clickForgotPasswordButton()
             await homePage.check.verifyRestoreFormVisible()
@@ -64,7 +60,7 @@ test.describe('Sign in form', async () => {
 
 
         })
-        await test.step('7: Registration button opens Registration modal', async () => {
+        await test.step('6: Registration button opens Registration modal', async () => {
             await homePage.do.clickSignInButton()
             await signInForm.do.openRegistration()
             await homePage.check.verifyRegistrationFormVisible()

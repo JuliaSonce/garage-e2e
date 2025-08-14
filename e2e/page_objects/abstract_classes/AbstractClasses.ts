@@ -11,6 +11,10 @@ export abstract class Component extends PageHolder {
         super(page)
         this.container = container;
     }
+
+    async isVisible(): Promise<boolean> {
+        return await this.container.isVisible();
+    }
 }
 
 export abstract class AppPage extends PageHolder {

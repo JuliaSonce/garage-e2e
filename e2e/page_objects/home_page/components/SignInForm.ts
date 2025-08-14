@@ -15,7 +15,8 @@ class Locators {
     loginButton = this.container.getByRole('button', { name: 'Login' });
     closeButton = this.container.locator('button[type="button"].close');
     emailErrorMessage = this.container.getByText("Email required");
-    passwordErrorMessage = this.container.getByAltText("Password required")
+    passwordErrorMessage = this.container.getByText("Password required")
+    errorForInvalidData = this.container.getByText('Wrong email or password')
 
 }
 
@@ -60,6 +61,13 @@ class Actions {
         await this.locators.forgotPasswordButton.click();
         const restoreAccess = new RestoreAccess(this.page, this.page.getByRole('dialog'));
         await restoreAccess.check.verifyRestoreAccessVisible();
+    }
+
+    async fillLoginData(email: string, password: string): Promise<void> {
+        await this.locators.emailInput.fill(email)
+        await this.locators.emailInput.press('Tab')
+        await this.locators.passwordInput.fill(password)
+        await this.locators.passwordInput.press('Tab')
     }
 
     // async closeAnyOpenModal(): Promise<void> {
@@ -123,6 +131,10 @@ class Assertions {
 
     async verifyNoModalsVisible(page: Page): Promise<void> {
         await expect(page.getByRole('dialog')).toHaveCount(0);
+    }
+
+    async verifyErrorForIncorrectData(): Promise<void> {
+        await expect(this.locators.errorForInvalidData).toBeVisible()
     }
 }
 

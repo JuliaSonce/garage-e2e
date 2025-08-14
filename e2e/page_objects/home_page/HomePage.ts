@@ -15,11 +15,13 @@ class Locators {
         hasText: 'Restore access×EmailSend'
     });
     loginModal = this.page.getByRole('dialog').getByRole('document').locator('div').filter({
-        hasText: 'Log in'
+        hasText: 'Log in×Wrong email or'
     });
     registrationModal = this.page.getByRole('dialog').getByRole('document').locator('div').filter({
         hasText: 'Registration×NameLast'
     });
+    modalDialog = this.page.getByRole('dialog');
+    closeButton = this.modalDialog.locator('button[type="button"].close');
 
 }
 
@@ -43,10 +45,23 @@ class Actions {
     async clickSignInButton(): Promise<void> {
         await this.header.do.clickOnSignInButton();
     }
+    async closeSafe(): Promise<void> {
+        const count = await this.locators.modalDialog.count();
+        if (count === 0) return;
+        if (!(await this.locators.modalDialog.isVisible().catch(() => false))) return;
 
-    //     async closeSignInForm(): Promise<void> {
-    //         await this.page.getByRole('button', { name: 'Close' }).click();
-    //     }
+        if (await this.locators.closeButton.isVisible().catch(() => false)) {
+            await this.locators.closeButton.click();
+        } else {
+            // Фолбек: якщо немає кнопки/оверлею, просто ESC
+            await this.page.keyboard.press('Escape').catch(() => { });
+        }
+
+        // Best-effort: коротко чекаємо на приховування, але не падаємо на навігації
+        await this.locators.modalDialog
+            .waitFor({ state: 'hidden', timeout: 1000 })
+            .catch(() => { });
+    }
 }
 class Assertions {
     constructor(private locators: Locators, private header: Header) { }
