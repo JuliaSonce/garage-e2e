@@ -22,6 +22,7 @@ class Locators {
     });
     modalDialog = this.page.getByRole('dialog');
     closeButton = this.modalDialog.locator('button[type="button"].close');
+    signUpButton = this.page.getByRole('button', { name: "Sign up" });
 
 }
 
@@ -44,6 +45,10 @@ class Actions {
 
     async clickSignInButton(): Promise<void> {
         await this.header.do.clickOnSignInButton();
+    }
+
+    async clickSignUpButton(): Promise<void> {
+        await this.locators.signUpButton.click()
     }
     async closeSafe(): Promise<void> {
         const count = await this.locators.modalDialog.count();

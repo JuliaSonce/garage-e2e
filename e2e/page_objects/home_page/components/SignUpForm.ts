@@ -7,10 +7,10 @@ class Locators {
     constructor(private container: Locator) { }
     modalContainer = this.container;
     title = this.container.getByRole('heading', { name: "Registration" });
-    nameInputField = this.container.getByLabel('Name');
-    lastNameInputField = this.container.getByLabel('Last Name');
+    nameInputField = this.container.locator('input#signupName')
+    lastNameInputField = this.container.locator('#signupLastName');
     signupEmail = this.container.getByLabel('Email')
-    signupPassword = this.container.getByLabel('Password')
+    signupPassword = this.container.getByRole('textbox', { name: 'Password', exact: true });
     repeatPassword = this.container.getByLabel('Re-enter password')
     registerButton = this.container.getByRole('button', { name: "Register" })
     closeButton = this.container.getByRole('button', { name: 'Close' })
@@ -26,7 +26,13 @@ class Actions {
     constructor(
         private locators: Locators,
     ) { }
-
+    async fillRegistrationData(name: string, lastName: string, email: string, password: string): Promise<void> {
+        await this.locators.nameInputField.fill(name)
+        await this.locators.lastNameInputField.fill(lastName)
+        await this.locators.signupEmail.fill(email)
+        await this.locators.signupPassword.fill(password)
+        await this.locators.repeatPassword.fill(password)
+    }
     async enterName(name: string): Promise<void> {
         await this.locators.nameInputField.fill(name)
     }
@@ -84,7 +90,7 @@ class Assertions {
         await expect(this.locators.registerButton).not.toBeEnabled()
     }
 
-    async verifyNoModalsVisible(page: Page): Promise<void> {
+    async verifyNoModalsVisible(): Promise<void> {
         await expect(this.locators.modalContainer).toHaveCount(0);
     }
     async verifyNameErrorVisible(): Promise<void> {

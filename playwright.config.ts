@@ -18,6 +18,7 @@ export default defineConfig({
         ignoreHTTPSErrors: true,
         video: 'retain-on-failure',
         screenshot: 'only-on-failure',
+        trace: 'on',
     },
 
     reporter: [['list'], ['html']]
