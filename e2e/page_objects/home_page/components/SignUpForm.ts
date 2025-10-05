@@ -14,12 +14,12 @@ class Locators {
     repeatPassword = this.container.getByLabel('Re-enter password')
     registerButton = this.container.getByRole('button', { name: "Register" })
     closeButton = this.container.getByRole('button', { name: 'Close' })
-    nameErrorMessage = this.container.getByText("Name required");
+    nameErrorMessage = this.container.getByText(/^Name required$/);
     nameIsInvalid = this.container.getByText("Name is invalid")
     lastNameErrorMessage = this.container.getByText("Last name required");
     emailIsRequired = this.container.getByText("Email required")
     invalidEmailErrorMessage = this.container.getByText("Email is incorrect");
-    passwordErrorMessage = this.container.getByText("Password required");
+    passwordErrorMessage = this.container.getByText(/^Password required$/);
     passwordTooShort = this.container.getByText(/Password has to be from 8 to 15 characters long/i)
     reEnterPasswordErrorMessage = this.container.getByText("Re-enter password required");
     userAlreadyExistsErrorMessage = this.container.getByText("User already exists");
@@ -55,7 +55,8 @@ class Actions {
     }
 
     async reEnterPassword(password: string): Promise<void> {
-        await this.locators.repeatPassword.fill(password)
+        await this.locators.repeatPassword.fill(password);
+        await this.locators.repeatPassword.blur();
 
     }
 
@@ -69,6 +70,22 @@ class Actions {
     async triggerValidation(): Promise<void> {
         await this.locators.repeatPassword.press('Enter');
     }
+
+    async triggerEmptyFieldValidation(): Promise<void> {
+        const {
+            nameInputField,
+            lastNameInputField,
+            signupEmail,
+            signupPassword,
+            repeatPassword,
+        } = this.locators;
+        await nameInputField.click();
+        await nameInputField.press('Tab');       // -> last name
+        await lastNameInputField.press('Tab');   // -> email
+        await signupEmail.press('Tab');          // -> password
+        await signupPassword.press('Tab');       // -> re-enter password
+        await repeatPassword.blur();
+    }
 }
 
 
@@ -78,7 +95,21 @@ class Assertions {
     constructor(
         private locators: Locators,
     ) { }
+    async verifyAllRequiredErrorsVisible(): Promise<void> {
+        const {
+            nameErrorMessage,
+            lastNameErrorMessage,
+            emailIsRequired,
+            passwordErrorMessage,
+            reEnterPasswordErrorMessage,
+        } = this.locators;
 
+        await expect(nameErrorMessage).toBeVisible();
+        await expect(lastNameErrorMessage).toBeVisible();
+        await expect(emailIsRequired).toBeVisible();
+        await expect(passwordErrorMessage).toBeVisible();
+        await expect(reEnterPasswordErrorMessage).toBeVisible();
+    }
 
     async verifyRegisterFormVisible(): Promise<void> {
         await expect(this.locators.modalContainer).toBeVisible()
@@ -142,6 +173,7 @@ class Assertions {
     async verifyPasswordNotMatchError() {
         await expect(this.locators.passwordNotMatchError).toContainText("Passwords do not match")
     }
+
 }
 
 
