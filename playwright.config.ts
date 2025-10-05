@@ -21,5 +21,5 @@ export default defineConfig({
         trace: 'on',
     },
 
-    reporter: [['list'], ['html']]
+    reporter: [['list'], ['html'], ['allure-playwright']]
 });

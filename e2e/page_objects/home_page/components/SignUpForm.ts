@@ -15,11 +15,15 @@ class Locators {
     registerButton = this.container.getByRole('button', { name: "Register" })
     closeButton = this.container.getByRole('button', { name: 'Close' })
     nameErrorMessage = this.container.getByText("Name required");
+    nameIsInvalid = this.container.getByText("Name is invalid")
     lastNameErrorMessage = this.container.getByText("Last name required");
-    emailErrorMessage = this.container.getByText("Email required");
+    emailIsRequired = this.container.getByText("Email required")
+    invalidEmailErrorMessage = this.container.getByText("Email is incorrect");
     passwordErrorMessage = this.container.getByText("Password required");
+    passwordTooShort = this.container.getByText(/Password has to be from 8 to 15 characters long/i)
     reEnterPasswordErrorMessage = this.container.getByText("Re-enter password required");
-
+    userAlreadyExistsErrorMessage = this.container.getByText("User already exists");
+    passwordNotMatchError = this.container.getByText("Passwords do not match")
 }
 
 class Actions {
@@ -37,11 +41,13 @@ class Actions {
         await this.locators.nameInputField.fill(name)
     }
 
+
     async enterLastName(lastName: string): Promise<void> {
         await this.locators.lastNameInputField.fill(lastName)
     }
     async enterEmail(email: string): Promise<void> {
         await this.locators.signupEmail.fill(email)
+        await this.locators.signupEmail.press('Enter');
     }
 
     async enterPassword(password: string): Promise<void> {
@@ -50,6 +56,7 @@ class Actions {
 
     async reEnterPassword(password: string): Promise<void> {
         await this.locators.repeatPassword.fill(password)
+
     }
 
     async clickRegisterButton(): Promise<void> {
@@ -59,7 +66,9 @@ class Actions {
     async clickCloseButton(): Promise<void> {
         await this.locators.closeButton.click()
     }
-
+    async triggerValidation(): Promise<void> {
+        await this.locators.repeatPassword.press('Enter');
+    }
 }
 
 
@@ -94,13 +103,23 @@ class Assertions {
         await expect(this.locators.modalContainer).toHaveCount(0);
     }
     async verifyNameErrorVisible(): Promise<void> {
+        await this.locators.nameInputField.press('Enter');
         await expect(this.locators.nameErrorMessage).toContainText("Name required")
     }
+
+    async verifyInvalidNameErrorVisible() {
+        await expect(this.locators.nameIsInvalid).toContainText("Name is invalid")
+    }
+
     async verifyLastNameErrorVisible(): Promise<void> {
         await expect(this.locators.lastNameErrorMessage).toContainText("Last name required")
     }
     async verifyEmailErrorVisible(): Promise<void> {
-        await expect(this.locators.emailErrorMessage).toContainText("Email required")
+        await expect(this.locators.invalidEmailErrorMessage).toContainText("Email is incorrect")
+    }
+
+    async verifyEmailIsRequired() {
+        await expect(this.locators.emailIsRequired).toContainText("Email required")
     }
 
 
@@ -112,6 +131,17 @@ class Assertions {
         await expect(this.locators.reEnterPasswordErrorMessage).toContainText("Re-enter password required")
     }
 
+    async verifyPasswordTooShortVisible() {
+        await expect(this.locators.passwordTooShort).toContainText(/8 to 15|minimum.*8/i)
+    }
+    async verifyUserAlreadyExistsErrorVisible(): Promise<void> {
+        await expect(this.locators.userAlreadyExistsErrorMessage)
+            .toContainText(/user.*exists/i);
+    }
+
+    async verifyPasswordNotMatchError() {
+        await expect(this.locators.passwordNotMatchError).toContainText("Passwords do not match")
+    }
 }
 
 

@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test"
 import HomePage from "../../../page_objects/home_page/HomePage"
 import SignInForm from "../../../page_objects/home_page/components/SignInForm"
-import users from "../../../tests/test-data/users.json"
+import users from "../../../test-data/users.json"
 import GaragePage from "e2e/page_objects/garage_page/GaragePage";
 
 

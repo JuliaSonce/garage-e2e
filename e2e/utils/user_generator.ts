@@ -50,10 +50,14 @@ export function generatePassword(): string {
 }
 
 
-const firstName = randomName();
-const lastName = randomLastName()
-const email = randomEmail()
-const password = generatePassword()
+export type User = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword?: string;
+};
+
 
 export function generateUser() {
     return {
@@ -61,6 +65,7 @@ export function generateUser() {
         lastName: randomLastName(),
         email: randomEmail(),
         password: generatePassword(),
+        confirmPassword: generatePassword()
     };
 }
 
