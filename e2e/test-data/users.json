@@ -1,0 +1,38 @@
+
+{
+   "validUsers":[
+      {
+         "name":"Test",
+         "lastName":"Testowich",
+         "email":"TestTestowich1@gmail.com",
+         "password":"Tester1986!"
+      }
+   ],
+   "invalidUsers":[
+      {
+         "case":"wrong_password",
+         "email":"TestTestowich1@gmail.com",
+         "password":"WrongPass!"
+      },
+      {
+         "case":"unknown_email",
+         "email":"nope@example.com",
+         "password":"Tester1986!"
+      },
+      {
+         "case":"empty_email_field",
+         "email":"",
+         "password":"Tester1986!"
+      },
+      {
+         "case":"empty_password_field",
+         "email":"TestTestowich1@gmail.com",
+         "password":""
+      },
+       {
+         "case":"empty_fields",
+         "email":"",
+         "password":""
+      }
+   ]
+}
