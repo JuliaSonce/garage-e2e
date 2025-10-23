@@ -1,10 +1,10 @@
 import type { Locator, Page } from "@playwright/test";
 export abstract class PageHolder {
-    abstract expectLoaded(): Promise<void>
     constructor(public page: Page) { }
 }
 
 export abstract class Component extends PageHolder {
+    abstract expectLoaded(): Promise<void>
     public container: Locator;
 
     constructor(page: Page, container: Locator) {
@@ -18,6 +18,7 @@ export abstract class Component extends PageHolder {
 }
 
 export abstract class AppPage extends PageHolder {
+    abstract expectLoaded(): Promise<void>
     public abstract pagePath: string;
 
     async open(path?: string) {

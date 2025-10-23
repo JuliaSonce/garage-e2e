@@ -1,61 +1,55 @@
-import { test, expect } from "@playwright/test"
-import HomePage from "../../../page_objects/home_page/HomePage"
-import SignInForm from "../../../page_objects/home_page/components/SignInForm"
-import users from "../../../test-data/users.json"
-import GaragePage from "e2e/page_objects/garage_page/GaragePage";
+import { test } from "../../../fixture";
+import { validUser } from "@data/validUser";
+import users from "@data/users.json";
+import SignInForm from "../../../app/components/signInForm.components";
 
 
 test.describe('Sign in form', () => {
-    let homePage: HomePage;
     let signInForm: SignInForm;
-    let garagePage: GaragePage;
+    test.beforeEach(async ({ app }) => {
 
-
-
-    test.beforeEach(async ({ page }) => {
-        homePage = new HomePage(page);
-        await homePage.open()
-        await homePage.expectLoaded()
-        await homePage.do.clickSignInButton()
-        signInForm = new SignInForm(page, homePage.locators.loginModal)
+        await app.homePage.open()
+        await app.homePage.expectLoaded()
+        await app.homePage.do.clickSignInButton()
+        signInForm = new SignInForm(app.page, app.homePage.locators.loginModal)
     })
-    test.afterEach(async ({ page }) => {
-        await homePage.do.closeSafe()
+    test.afterEach(async ({ app }) => {
+        await app.homePage.do.closeSafe()
 
     });
 
-    test("Verify that valid login data leads to Garage page", async ({ page }) => {
-        garagePage = new GaragePage(page);
-        await signInForm.do.fillLoginData(users.validUsers[0].email, users.validUsers[0].password)
-        await signInForm.do.clickLoginButton()
-        await garagePage.check.verifyGaragePageLoaded()
+    test("Verify that valid login data leads to Garage page", async ({ app }) => {
+
+        await app.signInForm.do.fillLoginData(validUser.email, validUser.password)
+        await app.signInForm.do.clickLoginButton()
+        await app.garagePage.check.verifyGaragePageLoaded()
     });
 
-    test('Invalid password shows error', async () => {
-        await signInForm.do.fillLoginData(users.invalidUsers[0].email, users.invalidUsers[0].password)
-        await signInForm.do.clickLoginButton()
-        await signInForm.check.verifyErrorForIncorrectData()
+    test('Invalid password shows error', async ({ app }) => {
+        await app.signInForm.do.fillLoginData(users.invalidUsers[0].email, users.invalidUsers[0].password)
+        await app.signInForm.do.clickLoginButton()
+        await app.signInForm.check.verifyErrorForIncorrectData()
 
     })
 
-    test('Invalid email shows error', async () => {
-        await signInForm.do.fillLoginData(users.invalidUsers[1].email, users.invalidUsers[1].password)
-        await signInForm.do.clickLoginButton()
-        await signInForm.check.verifyErrorForIncorrectData()
+    test('Invalid email shows error', async ({ app }) => {
+        await app.signInForm.do.fillLoginData(users.invalidUsers[1].email, users.invalidUsers[1].password)
+        await app.signInForm.do.clickLoginButton()
+        await app.signInForm.check.verifyErrorForIncorrectData()
     })
 
-    test('Empty Email shows error', async () => {
-        await signInForm.do.fillLoginData(users.invalidUsers[2].email, users.invalidUsers[2].password)
-        await signInForm.check.verifyEmailErrorVisible()
+    test('Empty Email shows error', async ({ app }) => {
+        await app.signInForm.do.fillLoginData(users.invalidUsers[2].email, users.invalidUsers[2].password)
+        await app.signInForm.check.verifyEmailErrorVisible()
     })
-    test('Empty Password shows error', async () => {
-        await signInForm.do.fillLoginData(users.invalidUsers[3].email, users.invalidUsers[3].password)
-        await signInForm.check.verifyPasswordErrorVisible()
+    test('Empty Password shows error', async ({ app }) => {
+        await app.signInForm.do.fillLoginData(users.invalidUsers[3].email, users.invalidUsers[3].password)
+        await app.signInForm.check.verifyPasswordErrorVisible()
     })
-    test('Empty Email & Password show errors', async () => {
-        await signInForm.do.fillLoginData(users.invalidUsers[4].email, users.invalidUsers[4].password)
-        await signInForm.check.verifyPasswordErrorVisible()
-        await signInForm.check.verifyPasswordErrorVisible()
+    test('Empty Email & Password show errors', async ({ app }) => {
+        await app.signInForm.do.fillLoginData(users.invalidUsers[4].email, users.invalidUsers[4].password)
+        await app.signInForm.check.verifyPasswordErrorVisible()
+        await app.signInForm.check.verifyPasswordErrorVisible()
 
     })
 

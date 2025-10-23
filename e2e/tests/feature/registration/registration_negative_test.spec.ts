@@ -1,17 +1,13 @@
-import { test, expect } from "@playwright/test"
-import HomePage from "e2e/page_objects/home_page/HomePage"
-import SignUpForm from "e2e/page_objects/home_page/components/SignUpForm"
-import GaragePage from "../../../page_objects/garage_page/GaragePage"
-import { generateUser } from "e2e/utils/user_generator";
 
+import { generateUser } from 'e2e/utils/user_generator';
+import { test } from '../../../fixture'
+import SignUpForm from 'e2e/app/components/signUpForm.components';
 
 test.describe("User registration - negative flow", () => {
-    let homePage: HomePage;
     let signUpForm: SignUpForm;
 
+    test.beforeEach(async ({ app: { homePage }, page }) => {
 
-    test.beforeEach(async ({ page }) => {
-        homePage = new HomePage(page)
         await homePage.open()
         await homePage.expectLoaded()
         await homePage.do.clickSignUpButton()

@@ -1,4 +1,11 @@
-
+import type { User } from '../../data/interfaces/user.i';
+// export interface User {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     password: string;
+//     confirmPassword?: string;
+// }
 export function randomString(): string {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     const maxLen = 20;
@@ -50,16 +57,9 @@ export function generatePassword(): string {
 }
 
 
-export type User = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword?: string;
-};
 
 
-export function generateUser() {
+export function generateUser(): User {
     return {
         firstName: randomName(),
         lastName: randomLastName(),

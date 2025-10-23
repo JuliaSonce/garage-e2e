@@ -1,8 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { AppPage } from '../abstract_classes/AbstractClasses';
-import Header from '../shared_components/Header';
-import SignIn from './components/SignInForm';
-import SignUp from './components/SignUpForm';
+import { AppPage } from '../abstractClasses';
+import Header from '../components/header.components';
+// import SignIn from './components/SignInForm';
+// import SignUp from './components/SignUpForm';
 
 
 class Locators {
@@ -27,6 +27,9 @@ class Locators {
 }
 
 class Actions {
+    openRegistrationModal() {
+        throw new Error('Method not implemented.');
+    }
     page: any;
     constructor(private locators: Locators, private header: Header) { }
 

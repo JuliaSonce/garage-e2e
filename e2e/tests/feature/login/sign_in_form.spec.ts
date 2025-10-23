@@ -1,58 +1,55 @@
-import { test, expect } from "@playwright/test"
-import HomePage from "../../../page_objects/home_page/HomePage"
-import SignInForm from "../../../page_objects/home_page/components/SignInForm"
-import RestoreAccessForm from "../../../page_objects/home_page/components/RestoreAccessForm"
-import SignUpForm from "../../../page_objects/home_page/components/SignUpForm"
+import RestoreAccessForm from 'e2e/app/components/restoreAccessForm.components'
+import { test } from '../../../fixture'
+import SignInForm from 'e2e/app/components/signInForm.components';
 
 
 
-test.describe('Sign in form', async () => {
-    let homePage: HomePage;
-    let signInForm: SignInForm;
 
 
+test.describe('Sign in form', () => {
+    let restoreAccessForm: RestoreAccessForm;
+    test.beforeEach(async ({ app }) => {
 
-    test.beforeEach(async ({ page }) => {
-
-        homePage = new HomePage(page);
-        await homePage.open()
-        await homePage.expectLoaded()
-        await homePage.do.clickSignInButton()
-        signInForm = new SignInForm(page, homePage.locators.loginModal)
+        //homePage = new HomePage(page);
+        await app.homePage.open()
+        await app.homePage.expectLoaded()
+        await app.homePage.do.clickSignInButton()
+        //signInForm = new SignInForm(page, homePage.locators.loginModal)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async ({ app }) => {
         //await signInForm.do.closeAnyOpenModal()
-        await signInForm.check.verifyNoModalsVisible(page)
+        await app.signInForm.check.verifyNoModalsVisible(app.page)
     });
 
-    test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ page }) => {
+    test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ app }) => {
         await test.step('1: Validate form is visible', async () => {
-            await signInForm.check.verifyFormIsVisible()
+            await app.signInForm.check.verifyFormIsVisible()
         })
 
 
         await test.step('2: Validate all elements are visible', async () => {
-            await signInForm.check.verifyAllElementsAreVisible()
+            await app.signInForm.check.verifyAllElementsAreVisible()
 
         })
 
         await test.step('3: Login button disabled by default', async () => {
-            await signInForm.check.verifyLoginButtonToBeDisabled()
+            await app.signInForm.check.verifyLoginButtonToBeDisabled()
         })
 
 
         await test.step('4: Close modal and check it disappears', async () => {
-            await signInForm.do.clickCloseButton()
-            await signInForm.check.verifyFormIsClosed()
+            await app.signInForm.do.clickCloseButton()
+            await app.signInForm.check.verifyFormIsClosed()
         })
 
 
         await test.step('5: Forgot password opens Restore Access modal', async () => {
-            await homePage.do.clickSignInButton()
-            await signInForm.do.clickForgotPasswordButton()
-            await homePage.check.verifyRestoreFormVisible()
-            let restoreAccessForm = new RestoreAccessForm(page, homePage.locators.restoreAccessModal)
+
+            await app.homePage.do.clickSignInButton()
+            await app.signInForm.do.clickForgotPasswordButton()
+            await app.homePage.check.verifyRestoreFormVisible()
+            restoreAccessForm = new RestoreAccessForm(app.page, app.homePage.locators.restoreAccessModal)
             await restoreAccessForm.do.clickCloseButton()
             await restoreAccessForm.check.verifyFormIsClosed()
 
@@ -61,10 +58,10 @@ test.describe('Sign in form', async () => {
 
         })
         await test.step('6: Registration button opens Registration modal', async () => {
-            await homePage.do.clickSignInButton()
-            await signInForm.do.openRegistration()
-            await homePage.check.verifyRegistrationFormVisible()
-            let registrationForm = new SignInForm(page, homePage.locators.registrationModal)
+            await app.homePage.do.clickSignInButton()
+            await app.signInForm.do.openRegistration()
+            await app.homePage.check.verifyRegistrationFormVisible()
+            let registrationForm = new SignInForm(app.page, app.homePage.locators.registrationModal)
             await registrationForm.do.clickCloseButton()
             await registrationForm.check.verifyFormIsClosed()
 

@@ -1,24 +1,23 @@
-import { test } from "@playwright/test"
-import SignUpForm from "../../../page_objects/home_page/components/SignUpForm"
-import HomePage from "../../../page_objects/home_page/HomePage"
-import { generateUser } from "e2e/utils/user_generator";
-import GaragePage from "../../../page_objects/garage_page/GaragePage";
+
+import { generateUser } from 'e2e/utils/user_generator';
+import { test } from '../../../fixture'
+import SignUpForm from 'e2e/app/components/signUpForm.components';
 
 
-test.describe("Validation Registration Form", async () => {
-    let homePage: HomePage;
+
+test.describe("Validation Registration Form", () => {
     let signUpForm: SignUpForm;
-    let garagePage: GaragePage;
 
-    test.beforeEach(async ({ page }) => {
-        homePage = new HomePage(page);
-        await homePage.open()
-        await homePage.expectLoaded()
-        await homePage.do.clickSignUpButton()
-        signUpForm = new SignUpForm(page, homePage.locators.registrationModal)
+    test.beforeEach(async ({ app }) => {
+
+        //let signUpForm: SignUpForm;
+        await app.homePage.open()
+        await app.homePage.expectLoaded()
+        await app.homePage.do.clickSignUpButton()
+        signUpForm = new SignUpForm(app.page, app.homePage.locators.registrationModal)
         await signUpForm.check.verifyRegisterFormVisible()
     })
-    test('Validates  visibility and functionality of elements, navigation actions in  "Sign Up" Form', async ({ page }) => {
+    test('Validates  visibility and functionality of elements, navigation actions in  "Sign Up" Form', async ({ app: { garagePage, signUpForm, homePage } }) => {
         await test.step('1: Validate registration form is visible', async () => {
             await signUpForm.check.verifyRegisterFormVisible()
         })
@@ -38,7 +37,6 @@ test.describe("Validation Registration Form", async () => {
             const user = generateUser();
             await signUpForm.do.fillRegistrationData(user.firstName, user.lastName, user.email, user.password)
             await signUpForm.do.clickRegisterButton()
-            garagePage = new GaragePage(page)
             await garagePage.check.verifyGaragePageLoaded()
         })
 

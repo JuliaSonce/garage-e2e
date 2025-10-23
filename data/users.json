@@ -2,7 +2,7 @@
 {
    "validUsers":[
       {
-         "name":"Test",
+         "firstName":"Test",
          "lastName":"Testowich",
          "email":"TestTestowich1@gmail.com",
          "password":"Tester1986!"

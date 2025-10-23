@@ -1,6 +1,6 @@
 import { expect, Page, Locator } from '@playwright/test';
-import { AppPage } from '../abstract_classes/AbstractClasses';
-import Header from '../shared_components/Header';
+import { AppPage } from '../abstractClasses'
+import Header from '../components/header.components';
 
 class Locators {
     constructor(private page: Page) { }

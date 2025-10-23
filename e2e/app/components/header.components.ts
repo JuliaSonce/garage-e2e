@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { Component } from '../abstract_classes/AbstractClasses';
+import { Component } from '../abstractClasses';
 
 class Locators {
     constructor(private container: Locator) { }

@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { Component } from '../../abstract_classes/AbstractClasses';
-import SignUp from '../components/SignUpForm';
-import RestoreAccess from '../components/RestoreAccessForm';
+import { Component } from '../abstractClasses';
+import SignUp from '../components/signUpForm.components';
+import RestoreAccess from '../components/restoreAccessForm.components';
 
 class Locators {
     constructor(private container: Locator) { }
