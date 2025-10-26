@@ -1,11 +1,11 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { Component } from '../abstractClasses';
+import { Component, PageHolder } from '../abstractClasses';
 
 
 
-class Locators {
-    constructor(private container: Locator) { }
-    modalContainer = this.container;
+class Locators extends PageHolder {
+    constructor(page: Page) { super(page); }
+    container = this.page.locator('.modal-content');
     title = this.container.getByRole('heading', { name: "Restore access" });
     emailInputField = this.container.getByRole('textbox', { name: "Email" });
     sendButton = this.container.getByRole('button', { name: "Send" });
@@ -17,6 +17,7 @@ class Locators {
 class Actions {
     constructor(
         private locators: Locators,
+        private page: Page,
     ) { }
 
 
@@ -43,6 +44,7 @@ class Assertions {
     }
     constructor(
         private locators: Locators,
+        private page: Page,
     ) { }
 
 
@@ -55,7 +57,7 @@ class Assertions {
     }
 
     async verifyFormIsClosed(): Promise<void> {
-        await expect(this.locators.modalContainer).toHaveCount(0);
+        await expect(this.locators.container).toHaveCount(0);
     }
 
     async verifySendButtonToBeDisabled(): Promise<void> {
@@ -67,19 +69,18 @@ class Assertions {
 }
 
 export default class RestoreAccessForm extends Component {
-    private formContainer: Locator;
+
     locators: Locators;
     do: Actions;
     check: Assertions;
-    constructor(page: Page, container: Locator) {
-        super(page, container);
-        this.formContainer = page.locator('.modal-content');
-        this.locators = new Locators(this.formContainer);
-        this.do = new Actions(this.locators);
-        this.check = new Assertions(this.locators);
+    constructor(page: Page) {
+        super(page);
+        this.locators = new Locators(page);
+        this.do = new Actions(this.locators, this.page);
+        this.check = new Assertions(this.locators, this.page);
     }
-    expectLoaded(): Promise<void> {
-        return Promise.resolve();
+    async expectLoaded(): Promise<void> {
+        await this.locators.container.isVisible();
     }
 }
 

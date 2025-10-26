@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { Component, PageHolder } from '../abstractClasses';
 import SignUp from '../components/signUpForm.components';
 import RestoreAccess from '../components/restoreAccessForm.components';
@@ -53,13 +53,13 @@ class Actions {
 
     async openRegistration(): Promise<void> {
         await this.locators.registrationButton.click();
-        const signUp = new SignUp(this.page, this.page.getByRole('dialog'));
+        const signUp = new SignUp(this.page);
         await signUp.check.verifyRegisterFormVisible();
     }
 
     async openRestoreAccess(): Promise<void> {
         await this.locators.forgotPasswordButton.click();
-        const restoreAccess = new RestoreAccess(this.page, this.page.getByRole('dialog'));
+        const restoreAccess = new RestoreAccess(this.page);
         await restoreAccess.check.verifyRestoreAccessVisible();
     }
 
@@ -145,7 +145,6 @@ export default class SignInForm extends Component {
     check: Assertions;
     constructor(page: Page) {
         super(page);
-        // this.formContainer = page.getByRole('dialog');
         this.locators = new Locators(page);
         this.do = new Actions(this.page, this.locators);
         this.check = new Assertions(this.locators);

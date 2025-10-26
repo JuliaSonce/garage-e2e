@@ -22,34 +22,34 @@ test.describe('Sign in form', () => {
         await homePage.signInForm.check.verifyNoModalsVisible(homePage.page)
     });
 
-    test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ app }) => {
+    test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ app: { homePage } }) => {
         await test.step('1: Validate form is visible', async () => {
-            await app.signInForm.check.verifyFormIsVisible()
+            await homePage.signInForm.check.verifyFormIsVisible()
         })
 
 
         await test.step('2: Validate all elements are visible', async () => {
-            await app.signInForm.check.verifyAllElementsAreVisible()
+            await homePage.signInForm.check.verifyAllElementsAreVisible()
 
         })
 
         await test.step('3: Login button disabled by default', async () => {
-            await app.signInForm.check.verifyLoginButtonToBeDisabled()
+            await homePage.signInForm.check.verifyLoginButtonToBeDisabled()
         })
 
 
         await test.step('4: Close modal and check it disappears', async () => {
-            await app.signInForm.do.clickCloseButton()
-            await app.signInForm.check.verifyFormIsClosed()
+            await homePage.signInForm.do.clickCloseButton()
+            await homePage.signInForm.check.verifyFormIsClosed()
         })
 
 
         await test.step('5: Forgot password opens Restore Access modal', async () => {
 
-            await app.homePage.do.clickSignInButton()
-            await app.signInForm.do.clickForgotPasswordButton()
-            await app.homePage.check.verifyRestoreFormVisible()
-            restoreAccessForm = new RestoreAccessForm(app.page, app.homePage.locators.restoreAccessModal)
+            await homePage.do.clickSignInButton()
+            await homePage.signInForm.do.clickForgotPasswordButton()
+            await homePage.check.verifyRestoreFormVisible()
+            restoreAccessForm = new RestoreAccessForm(homePage.page)
             await restoreAccessForm.do.clickCloseButton()
             await restoreAccessForm.check.verifyFormIsClosed()
 
@@ -58,10 +58,10 @@ test.describe('Sign in form', () => {
 
         })
         await test.step('6: Registration button opens Registration modal', async () => {
-            await app.homePage.do.clickSignInButton()
-            await app.signInForm.do.openRegistration()
-            await app.homePage.check.verifyRegistrationFormVisible()
-            let registrationForm = new SignInForm(app.page)
+            await homePage.do.clickSignInButton()
+            await homePage.signInForm.do.openRegistration()
+            await homePage.check.verifyRegistrationFormVisible()
+            let registrationForm = new SignInForm(homePage.page)
             await registrationForm.do.clickCloseButton()
             await registrationForm.check.verifyFormIsClosed()
 

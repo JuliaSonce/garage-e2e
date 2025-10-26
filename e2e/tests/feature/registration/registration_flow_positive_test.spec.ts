@@ -1,7 +1,6 @@
 
 import { generateUser } from 'e2e/utils/user_generator';
-//import { test } from '../../../fixture'
-import { test } from "@playwright/test"
+import { test } from '../../../fixture'
 import SignUpForm from 'e2e/app/components/signUpForm.components';
 
 test.describe("Validation Registration Form", () => {
@@ -13,12 +12,12 @@ test.describe("Validation Registration Form", () => {
         await app.homePage.open()
         await app.homePage.expectLoaded()
         await app.homePage.do.clickSignUpButton()
-        signUpForm = new SignUpForm(app.page, app.homePage.locators.registrationModal)
+        signUpForm = new SignUpForm(app.page)
         await signUpForm.check.verifyRegisterFormVisible()
     })
-    test('Validates  visibility and functionality of elements, navigation actions in  "Sign Up" Form', async ({ app: { garagePage, signUpForm, homePage } }) => {
+    test('Validates  visibility and functionality of elements, navigation actions in  "Sign Up" Form', async ({ app: { garagePage, homePage } }) => {
         await test.step('1: Validate registration form is visible', async () => {
-            await signUpForm.check.verifyRegisterFormVisible()
+            await homePage.signUpForm.check.verifyRegisterFormVisible()
         })
         await test.step('2: Validate all elements are visible', async () => {
             await signUpForm.check.verifyAllElementsAreVisible()

@@ -2,12 +2,13 @@ import { expect, Locator, Page } from '@playwright/test';
 import { AppPage } from '../abstractClasses';
 import Header from '../components/header.components';
 import SignInForm from '../components/signInForm.components';
+import RestoreAccessForm from '../components/restoreAccessForm.components';
+import SignUpForm from '../components/signUpForm.components';
 import { validUser } from "@data/validUser";
 
 
 class Locators {
     constructor(private page: Page) { }
-
     headerComponent = this.page.locator('app-header > header');
     aboutSection = this.page.locator('#aboutSection');
     contactsSection = this.page.locator('#contactsSection');
@@ -82,7 +83,7 @@ class Actions {
     }
 }
 class Assertions {
-    constructor(private locators: Locators, private header: Header) { }
+    constructor(private locators: Locators, private header: Header, private signInForm: SignInForm) { }
 
     async verifyPageHeader(): Promise<void> {
         await this.header.check.allHeaderElementsAreVisibleOnHomePage();
@@ -129,7 +130,8 @@ export default class HomePage extends AppPage {
 
     header: Header;
     signInForm: SignInForm;
-    // doSomthing: any;
+    signUpForm: SignUpForm;
+    restoreAccessForm: RestoreAccessForm;
     locators: Locators;
     do: Actions;
     check: Assertions;
@@ -137,10 +139,12 @@ export default class HomePage extends AppPage {
     constructor(page: Page) {
         super(page);
         this.signInForm = new SignInForm(page);
+        this.signUpForm = new SignUpForm(page);
+        this.restoreAccessForm = new RestoreAccessForm(page);
         this.locators = new Locators(page);
         this.header = new Header(page, this.locators.headerComponent);
         this.do = new Actions(this.locators, this.header, this.signInForm);
-        this.check = new Assertions(this.locators, this.header);
+        this.check = new Assertions(this.locators, this.header, this.signInForm);
     }
 
     async expectLoaded(): Promise<void> {

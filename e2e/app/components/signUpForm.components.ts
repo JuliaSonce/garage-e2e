@@ -1,11 +1,11 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { Component } from '../abstractClasses';
+import { Component, PageHolder } from '../abstractClasses';
 
 
 
-class Locators {
-    constructor(private container: Locator) { }
-    modalContainer = this.container;
+class Locators extends PageHolder {
+    constructor(page: Page) { super(page) }
+    container = this.page.getByRole('dialog');
     title = this.container.getByRole('heading', { name: "Registration" });
     nameInputField = this.container.locator('input#signupName')
     lastNameInputField = this.container.locator('#signupLastName');
@@ -112,7 +112,7 @@ class Assertions {
     }
 
     async verifyRegisterFormVisible(): Promise<void> {
-        await expect(this.locators.modalContainer).toBeVisible()
+        await expect(this.locators.container).toBeVisible()
         await expect(this.locators.title).toContainText("Registration")
     }
 
@@ -131,7 +131,7 @@ class Assertions {
     }
 
     async verifyNoModalsVisible(): Promise<void> {
-        await expect(this.locators.modalContainer).toHaveCount(0);
+        await expect(this.locators.container).toHaveCount(0);
     }
     async verifyNameErrorVisible(): Promise<void> {
         await this.locators.nameInputField.press('Enter');
@@ -178,14 +178,14 @@ class Assertions {
 
 
 export default class SignUpForm extends Component {
-    private formContainer: Locator;
+
     locators: Locators;
     do: Actions;
     check: Assertions;
-    constructor(page: Page, container: Locator) {
-        super(page, container);
-        this.formContainer = page.getByRole('dialog');
-        this.locators = new Locators(this.formContainer);
+    constructor(page: Page) {
+        super(page);
+
+        this.locators = new Locators(page);
         this.do = new Actions(this.locators);
         this.check = new Assertions(this.locators);
     }
