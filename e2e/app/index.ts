@@ -5,6 +5,7 @@ import HomePage from "./pages/home.page";
 import RestoreAccessForm from "./components/restoreAccessForm.components"
 import SignInForm from "./components/signInForm.components";
 import SignUpForm from "./components/signUpForm.components";
+import AddCarComponent from "./components/addCar.components";
 
 
 export class Application extends PageHolder {
@@ -14,6 +15,8 @@ export class Application extends PageHolder {
     public restoreAccessForm = new RestoreAccessForm(this.page, this.page.locator('div.modal__container'));
     public signInForm = new SignInForm(this.page, this.page.locator('div.modal__container'));
     public signUpForm = new SignUpForm(this.page, this.page.locator('div.modal__container'));
+
+
 
     //API
 

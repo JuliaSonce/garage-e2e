@@ -61,7 +61,7 @@ test.describe('Sign in form', () => {
             await app.homePage.do.clickSignInButton()
             await app.signInForm.do.openRegistration()
             await app.homePage.check.verifyRegistrationFormVisible()
-            let registrationForm = new SignInForm(app.page, app.homePage.locators.registrationModal)
+            let registrationForm = new SignInForm(app.page)
             await registrationForm.do.clickCloseButton()
             await registrationForm.check.verifyFormIsClosed()
 

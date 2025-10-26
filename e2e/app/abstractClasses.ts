@@ -5,16 +5,16 @@ export abstract class PageHolder {
 
 export abstract class Component extends PageHolder {
     abstract expectLoaded(): Promise<void>
-    public container: Locator;
 
-    constructor(page: Page, container: Locator) {
+
+    constructor(page: Page) {
         super(page)
-        this.container = container;
+
     }
 
-    async isVisible(): Promise<boolean> {
-        return await this.container.isVisible();
-    }
+    // async isVisible(): Promise<boolean> {
+    //     return await this.container.isVisible();
+    // }
 }
 
 export abstract class AppPage extends PageHolder {

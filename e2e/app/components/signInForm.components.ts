@@ -1,11 +1,11 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { Component } from '../abstractClasses';
+import { Component, PageHolder } from '../abstractClasses';
 import SignUp from '../components/signUpForm.components';
 import RestoreAccess from '../components/restoreAccessForm.components';
 
-class Locators {
-    constructor(private container: Locator) { }
-    modalDialog = this.container;
+class Locators extends PageHolder {
+    constructor(page: Page) { super(page); }
+    container = this.page.getByRole('dialog');
     title = this.container.getByRole('heading', { name: "Log in" });
     emailInput = this.container.getByRole('textbox', { name: 'Email' });
     passwordInput = this.container.getByRole('textbox', { name: 'Password' });
@@ -83,7 +83,7 @@ class Assertions {
     ) { }
 
     async verifyFormIsVisible(): Promise<void> {
-        await expect(this.locators.modalDialog).toBeVisible()
+        await expect(this.locators.container).toBeVisible()
         await expect(this.locators.title).toContainText("Log in")
     }
 
@@ -121,7 +121,7 @@ class Assertions {
         await expect(this.locators.passwordErrorMessage).toContainText("Password required")
     }
     async verifyFormIsClosed(): Promise<void> {
-        await expect(this.locators.modalDialog).toHaveCount(0);
+        await expect(this.locators.container).toHaveCount(0);
     }
 
     async verifyRestoreAccessIsOpened(page: Page): Promise<void> {
@@ -139,19 +139,20 @@ class Assertions {
 }
 
 export default class SignInForm extends Component {
-    private formContainer: Locator;
+
     locators: Locators;
     do: Actions;
     check: Assertions;
-    constructor(page: Page, container: Locator) {
-        super(page, container);
-        this.formContainer = page.getByRole('dialog');
-        this.locators = new Locators(this.formContainer);
+    constructor(page: Page) {
+        super(page);
+        // this.formContainer = page.getByRole('dialog');
+        this.locators = new Locators(page);
         this.do = new Actions(this.page, this.locators);
         this.check = new Assertions(this.locators);
     }
-    expectLoaded(): Promise<void> {
-        return Promise.resolve();
+    async expectLoaded(): Promise<void> {
+        await this.locators.container.isVisible();
+
     }
 }
 

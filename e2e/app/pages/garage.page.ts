@@ -16,7 +16,7 @@ class Actions {
         private page: Page,
         private locators: Locators) { }
 
-    async clickAddCar() {
+    async clickAddCarButton() {
         await this.locators.addCarButton.click();
     }
 
@@ -35,6 +35,7 @@ class Assertions {
     async verifyAddCarModalVisible() {
         await expect(this.locators.addCarModal).toBeVisible();
     }
+
 
 }
 

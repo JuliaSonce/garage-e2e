@@ -1,8 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { AppPage } from '../abstractClasses';
 import Header from '../components/header.components';
-// import SignIn from './components/SignInForm';
-// import SignUp from './components/SignUpForm';
+import SignInForm from '../components/signInForm.components';
+import { validUser } from "@data/validUser";
 
 
 class Locators {
@@ -27,11 +27,12 @@ class Locators {
 }
 
 class Actions {
+
     openRegistrationModal() {
         throw new Error('Method not implemented.');
     }
     page: any;
-    constructor(private locators: Locators, private header: Header) { }
+    constructor(private locators: Locators, private header: Header, private signInForm: SignInForm) { }
 
     async clickAboutAndScrollToSection(): Promise<void> {
         await this.header.do.clickOnAboutButton();
@@ -69,6 +70,15 @@ class Actions {
         await this.locators.modalDialog
             .waitFor({ state: 'hidden', timeout: 1000 })
             .catch(() => { });
+    }
+
+    async loginRegisteredUser(): Promise<void> {
+        await this.header.do.clickOnSignInButton();
+        await this.signInForm.do.fillLoginData(validUser.email, validUser.password);
+        await this.signInForm.do.clickLoginButton();
+
+
+
     }
 }
 class Assertions {
@@ -118,6 +128,7 @@ export default class HomePage extends AppPage {
     public pagePath = 'https://qauto2.forstudy.space';
 
     header: Header;
+    // doSomthing: any;
     locators: Locators;
     do: Actions;
     check: Assertions;
@@ -134,4 +145,8 @@ export default class HomePage extends AppPage {
     async expectLoaded(): Promise<void> {
         await expect(this.page).toHaveTitle('Hillel Qauto');
     }
+
+    // async doSomething() {
+    //     await this.page.goto('https://qauto2.forstudy.space');
+    // }
 }
