@@ -12,10 +12,10 @@ export class Application extends PageHolder {
     //POM
     public garagePage = new GaragePage(this.page);
     public homePage = new HomePage(this.page);
-    public restoreAccessForm = new RestoreAccessForm(this.page, this.page.locator('div.modal__container'));
-    public signInForm = new SignInForm(this.page, this.page.locator('div.modal__container'));
-    public signUpForm = new SignUpForm(this.page, this.page.locator('div.modal__container'));
-
+    // public restoreAccessForm = new RestoreAccessForm(this.page, this.page.locator('div.modal__container'));
+    // public signInForm = new SignInForm(this.page);
+    // public signUpForm = new SignUpForm(this.page, this.page.locator('div.modal__container'));
+    // replace to pages like signInComponent in HomePage
 
 
     //API

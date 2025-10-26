@@ -17,9 +17,9 @@ test.describe('Sign in form', () => {
         //signInForm = new SignInForm(page, homePage.locators.loginModal)
     })
 
-    test.afterEach(async ({ app }) => {
+    test.afterEach(async ({ app: { homePage } }) => {
         //await signInForm.do.closeAnyOpenModal()
-        await app.signInForm.check.verifyNoModalsVisible(app.page)
+        await homePage.signInForm.check.verifyNoModalsVisible(homePage.page)
     });
 
     test('Validates  visibility and functionality of elements, navigation actions in  "Sign in" Form', async ({ app }) => {

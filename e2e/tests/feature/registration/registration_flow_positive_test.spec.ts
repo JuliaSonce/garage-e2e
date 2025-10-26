@@ -1,9 +1,8 @@
 
 import { generateUser } from 'e2e/utils/user_generator';
-import { test } from '../../../fixture'
+//import { test } from '../../../fixture'
+import { test } from "@playwright/test"
 import SignUpForm from 'e2e/app/components/signUpForm.components';
-
-
 
 test.describe("Validation Registration Form", () => {
     let signUpForm: SignUpForm;
