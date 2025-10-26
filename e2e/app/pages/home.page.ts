@@ -128,6 +128,7 @@ export default class HomePage extends AppPage {
     public pagePath = 'https://qauto2.forstudy.space';
 
     header: Header;
+    signInForm: SignInForm;
     // doSomthing: any;
     locators: Locators;
     do: Actions;
@@ -135,10 +136,10 @@ export default class HomePage extends AppPage {
 
     constructor(page: Page) {
         super(page);
-
+        this.signInForm = new SignInForm(page);
         this.locators = new Locators(page);
         this.header = new Header(page, this.locators.headerComponent);
-        this.do = new Actions(this.locators, this.header);
+        this.do = new Actions(this.locators, this.header, this.signInForm);
         this.check = new Assertions(this.locators, this.header);
     }
 
